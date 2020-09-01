@@ -1,5 +1,7 @@
-# Tell me what's going on.. can also pass command line argument -v
-verbose: False
+
+# Relative path to the top of the target blog. If images are downloaded, the
+# URLs in the posts will be modified to point to blog_prefix/images/xxx.
+blog_prefix: ""
 
 # The directory where exitwp looks for wordpress export xml files.
 wp_exports: wordpress-xml
@@ -16,20 +18,35 @@ target_format: markdown
 date_format: '%Y-%m-%d %H:%M:%S'
 
 # Try to download and reloacate all images locally to the blog.
-download_images: False
+download_images: true
+
+# Parent directory for item types
+item_type_parent_path:
+  post: post
+  page: ""
 
 # Item types we don't want to import.
 item_type_filter: {attachment, nav_menu_item}
 
-# filter by any field type on the post.
-# By default, we're filtering based on field "status" set to "draft"
-item_field_filter: {status: draft}
+# exclude by filtering on any field type on the post.
+# For example, you can exclude based on field "status" set to "draft"
+# item_field_filter: {status: draft}
+item_field_filter: {}
+
+# Map wordpress item status to Hugo header content
+item_field_map:
+  status:
+    # If status of an item is private, make the yaml header 'draft' to be True
+    private:
+      draft: True
+      wp_status: private  # to distinguish from genuine drafts
 
 taxonomies:
-  # Filter taxonomies.
+  # Exclude taxonomies.
   filter: {}
-  # Filter taxonomies entries.
-  entry_filter: {category: Uncategorized}
+  # Exclude taxonomies entries.
+  # entry_filter: {category: Uncategorized}
+  entry_filter: {}
   # Rename taxonomies when writing jekyll output format.
   name_mapping: {category: categories, post_tag: tags}
 
